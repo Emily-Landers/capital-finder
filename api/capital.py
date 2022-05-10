@@ -22,7 +22,7 @@ class handler(BaseHTTPRequestHandler):
             url = f"{BASE_URL}/name/{country}"
             res = requests.get(url)
             data = res.json()
-            cap = str(data[0]["capital"])
+            cap = data[0]["capital"]
             message = f"The capital of {country} is {cap}"
         elif capital:
             url = f"{BASE_URL}/capital/{capital}"
