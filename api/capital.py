@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import requests
-import re
+
 
 class handler(BaseHTTPRequestHandler):
     
@@ -22,7 +22,7 @@ class handler(BaseHTTPRequestHandler):
             url = f"{BASE_URL}/name/{country}"
             res = requests.get(url)
             data = res.json()
-            cap = data[0]["capital"]
+            cap = data[0]["capital"][0]
             message = f"The capital of {country} is {cap}"
         elif capital:
             url = f"{BASE_URL}/capital/{capital}"
@@ -35,5 +35,3 @@ class handler(BaseHTTPRequestHandler):
         
         self.wfile.write(message.encode())
         return
-
-#E.g./capital-finder?capital=Santiago should generate an http response of Santiago is the capital of Chile.
