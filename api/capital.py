@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
 import requests
+import re
 
 class handler(BaseHTTPRequestHandler):
     
@@ -21,15 +22,16 @@ class handler(BaseHTTPRequestHandler):
             url = f"{BASE_URL}/name/{country}"
             res = requests.get(url)
             data = res.json()
-            cap = data[0]["capital"]
+            cap = str(data[0]["capital"])
             message = f"The capital of {country} is {cap}"
         elif capital:
-            pass
-            
+            url = f"{BASE_URL}/capital/{capital}"
+            res = requests.get(url)
+            data = res.json()
+            countr = str(data[0]["name"]["common"])
+            message = f"{capital} is the capital of {countr}"
         else:
-            pass
-        
-
+            message = "No, thats all wrong"
         
         self.wfile.write(message.encode())
         return
