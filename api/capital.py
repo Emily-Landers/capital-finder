@@ -1,13 +1,12 @@
 from http.server import BaseHTTPRequestHandler
 from urllib import parse
-#import requests
+import requests
 
 class handler(BaseHTTPRequestHandler):
     
     def do_GET(self):
         BASE_URL = "https://restcountries.com/v3.1"
-        path = self.path
-        url_components = parse.urlsplit(path)
+        url_components = parse.urlsplit(self.path)
         query_string_list = parse.parse_qsl(url_components.query)
         dic = dict(query_string_list)
         
@@ -18,7 +17,19 @@ class handler(BaseHTTPRequestHandler):
         country = dic.get("country")
         capital = dic.get("capital")
         
-        message = f"The capital of {country} is {capital}"
+        if country:
+            url = f"{BASE_URL}/name/{country}"
+            res = requests.get(url)
+            data = res.json()
+            cap = data[0]["capital"]
+            message = f"The capital of {country} is {cap}"
+        elif capital:
+            pass
+            
+        else:
+            pass
+        
+
         
         self.wfile.write(message.encode())
         return
